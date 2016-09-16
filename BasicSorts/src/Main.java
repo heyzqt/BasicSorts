@@ -1,7 +1,7 @@
 /**
  * Created by heyzqt on 2016/9/16.
  */
-public class Test {
+public class Main {
 
 	/**
 	 * @param args
@@ -12,9 +12,34 @@ public class Test {
 		// insertionSort(a);
 		// bubbleSort(a);
 		// quickSork(a, 0, a.length - 1);
-
+		selectSort(a);
 		for (int i = 0; i < a.length; i++) {
 			System.out.print(a[i] + " ");
+		}
+	}
+
+	/**
+	 * 简单选择排序
+	 * 
+	 * @param a
+	 */
+	private static void selectSort(int a[]) {
+		int k;
+		int min;
+		for (int i = 0; i < a.length - 1; i++) {
+			min = i; // 记录最小值的下标
+			// 找出每一趟的最小值
+			for (int j = i + 1; j < a.length; j++) {
+				if (a[min] > a[j]) {
+					min = j;
+				}
+			}
+			if (min != i) {
+				// 交换
+				k = a[i];
+				a[i] = a[min];
+				a[min] = k;
+			}
 		}
 	}
 
