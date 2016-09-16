@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 /**
  * Created by heyzqt on 2016/9/16.
  */
@@ -9,12 +11,115 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		int[] a = new int[] { 5, 3, 1, 2, 7, 6, 7, 9 };
+		int[] b = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
 		// insertionSort(a);
 		// bubbleSort(a);
 		// quickSork(a, 0, a.length - 1);
-		selectSort(a);
-		for (int i = 0; i < a.length; i++) {
-			System.out.print(a[i] + " ");
+		// selectSort(a);
+		// shellSort(a);
+		// int[] a = new int[] { 28, 35, 20, 32, 18, 12 };
+		// sift(a, 0, a.length);
+
+		mergeRecursionSort(a, b, 0, a.length - 1);
+		System.out.println(Arrays.toString(a));
+	}
+
+	/**
+	 * 筛选法调整堆的算法
+	 * 
+	 * @param a
+	 */
+	private static void sift(int[] a, int k, int m) {
+		int i = k; // 指向要筛选的结点下标
+		int j = 2 * i + 1; // 指向要筛选的结点的左孩子的下标
+		int t;
+		int temp = a[i];
+		while (j < m) {
+			if (j + 1 < m && a[j + 1] > a[j])
+				j++;
+			if (temp >= a[j])
+				break;
+			a[i] = a[j];
+			i = j;
+			j = 2 * i + 1;
+		}
+		a[i] = temp;
+	}
+
+	/**
+	 * 希尔排序：将数组以增量d(n/2)分隔开(直接插入排序的d=1)，再进行直接插入排序,直到d=0结束
+	 * 
+	 * @param a
+	 */
+	private static void shellSort(int a[]) {
+		int n = a.length;
+		int d;
+		int temp;
+		for (d = n / 2; d > 0; d /= 2) { // 找出增量
+			for (int i = d; i < n; i++) { // 直接插入排序
+				int j = i - d; // 记录要插入的下标
+				temp = a[i];
+				while (j >= 0 && a[j] > temp) {
+					a[j + d] = a[j]; // 后移d位插入
+					j -= d;
+				}
+				a[j + d] = temp;
+			}
+		}
+
+	}
+
+	/**
+	 * 归并排序递归算法
+	 * 
+	 * @param r
+	 * @param r2
+	 * @param first
+	 * @param end
+	 */
+	private static void mergeRecursionSort(int r[], int r1[], int first, int end) {
+		if (first < end) {
+			int m = (first + end) / 2;
+			mergeRecursionSort(r, r1, first, m);
+			mergeRecursionSort(r, r1, m + 1, end);
+			merge(r, r1, first, m, end);
+		}
+	}
+
+	/**
+	 * 一次归并算法
+	 * 
+	 * @param r
+	 * @param r1
+	 * @param first
+	 * @param end
+	 */
+	private static void merge(int r[], int r1[], int first, int middle, int end) {
+		// TODO Auto-generated method stub
+		int i = first;
+		int j = middle + 1;
+		int k = first;
+		while (i <= middle && j <= end) {
+			if (r[i] < r[j]) {
+				r1[k++] = r[i++];
+			} else {
+				r1[k++] = r[j++];
+			}
+		}
+		// 处理尾数
+		if (i <= middle) {
+			while (i <= middle) {
+				r1[k++] = r[i++];
+			}
+		} else {
+			while (i <= middle) {
+				r1[k++] = r[j++];
+			}
+		}
+
+		// 将临时数组的值赋给原数组
+		for (; first < k; first++) {
+			r[first] = r1[first];
 		}
 	}
 
@@ -115,15 +220,15 @@ public class Main {
 	 */
 	private static void insertionSort(int a[]) {
 		int j;
-		int temp;
+		int temp; // 暂存单元
 		for (int i = 1; i < a.length; i++) {
-			j = i;
+			j = i - 1; // 记录要插入的位置
 			temp = a[i];
-			while (j > 0 && a[j - 1] > temp) {
-				a[j] = a[j - 1];
+			while (j >= 0 && a[j] > temp) {
+				a[j + 1] = a[j];
 				j--;
 			}
-			a[j] = temp;
+			a[j + 1] = temp;
 		}
 	}
 }
