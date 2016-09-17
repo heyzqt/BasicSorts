@@ -10,40 +10,68 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		int[] a = new int[] { 5, 3, 1, 2, 7, 6, 7, 9 };
-		int[] b = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
+		// int[] a = new int[] { 5, 3, 1, 2, 7, 6, 7, 9 };
+		// int[] b = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
+		int[] a = new int[] { 5, 3, 1, 2, 4 };
 		// insertionSort(a);
 		// bubbleSort(a);
 		// quickSork(a, 0, a.length - 1);
 		// selectSort(a);
 		// shellSort(a);
-		// int[] a = new int[] { 28, 35, 20, 32, 18, 12 };
-		// sift(a, 0, a.length);
-
-		mergeRecursionSort(a, b, 0, a.length - 1);
+		// mergeRecursionSort(a, b, 0, a.length - 1);
+		heapSort(a);
 		System.out.println(Arrays.toString(a));
 	}
 
 	/**
-	 * 筛选法调整堆的算法
+	 * 堆排序：1.从下到上初始化一个堆 2.将根节点与最后一个结点交换 3.筛选根节点重建堆
 	 * 
 	 * @param a
 	 */
-	private static void sift(int[] a, int k, int m) {
-		int i = k; // 指向要筛选的结点下标
-		int j = 2 * i + 1; // 指向要筛选的结点的左孩子的下标
+	private static void heapSort(int a[]) {
+		int n = a.length - 1;
 		int t;
-		int temp = a[i];
-		while (j < m) {
-			if (j + 1 < m && a[j + 1] > a[j])
-				j++;
-			if (temp >= a[j])
-				break;
-			a[i] = a[j];
-			i = j;
-			j = 2 * i + 1;
+		// 初始化堆 i=n/2 找到最后一个还有左孩子的结点
+		for (int i = n / 2; i >= 0; i--) {
+			sift(a, i, n);
 		}
-		a[i] = temp;
+
+		// 交换
+		for (int i = 0; i < n; i++) {
+			t = a[0];
+			a[0] = a[n - i];
+			a[n - i] = t;
+
+			// 重新构造堆
+			sift(a, 0, n - i - 1);
+		}
+	}
+
+	/**
+	 * 筛选法调整堆的算法:在根节点左右子树全是堆的情况下，对这个二叉树进行筛选，建成一个堆
+	 * 
+	 * @param a
+	 *            原数组
+	 * @param k
+	 *            筛选数的下标
+	 * @param m
+	 *            二叉树的最后一个结点的下标
+	 */
+	private static void sift(int[] a, int k, int m) {
+		int i = k;
+		int j = i * 2 + 1; // 要筛选结点的左孩子
+		int t;
+		while (j <= m) {
+			if (j < m && a[j] < a[j + 1])
+				j++; // 选左右孩子中的较大者
+			if (a[i] > a[j]) { // 如果根节点大于较大者
+				break;
+			} else {
+				t = a[i];
+				a[i] = a[j];
+				a[j] = t;
+			}
+		}
 	}
 
 	/**
@@ -87,11 +115,12 @@ public class Main {
 	}
 
 	/**
-	 * 一次归并算法
+	 * 一次归并算法：比较左右两部分的数，取较小的一个放入r1中，继续比较，并赋值，直到有一边的数据取完,然后 将另外一个数组剩余部分再放入r1中
 	 * 
 	 * @param r
 	 * @param r1
 	 * @param first
+	 * @param middle
 	 * @param end
 	 */
 	private static void merge(int r[], int r1[], int first, int middle, int end) {
@@ -149,7 +178,7 @@ public class Main {
 	}
 
 	/**
-	 * 冒泡排序 将每2个数进行两两比较，比较后将大的数放在后面 每一趟比较出最大的数放在数组最后 然后每一趟比较的数减少一位
+	 * 冒泡排序：将每2个数进行两两比较，比较后将大的数放在后面 每一趟比较出最大的数放在数组最后 然后每一趟比较的数减少一位
 	 * 
 	 * @param a
 	 */
@@ -167,7 +196,7 @@ public class Main {
 	}
 
 	/**
-	 * 快速排序 先对数组进行一次划分 分为 左区 轴值 右区 三部分 左区的值均小于轴值 右区的值均大于轴值 然后重复执行一次划分 ，
+	 * 快速排序：先对数组进行一次划分 分为 左区 轴值 右区 三部分 左区的值均小于轴值 右区的值均大于轴值 然后重复执行一次划分 ，
 	 * 至到只剩最后一个数 这是一个递归的过程
 	 * 
 	 * @param a
@@ -212,7 +241,7 @@ public class Main {
 	}
 
 	/**
-	 * 插入排序 分为有序区和无序区，初始数据均在无序区内 然后将数据挨个从无序区放入有序区中，每次将有序区数据与无序区第一位值(temp)比较
+	 * 插入排序：分为有序区和无序区，初始数据均在无序区内 然后将数据挨个从无序区放入有序区中，每次将有序区数据与无序区第一位值(temp)比较
 	 * 若值大于temp,则后移一位,直到小于或等于temp,记录下此时的位置j 将temp值赋给a[j]
 	 * 插入排序适合数据量小的情况，若数据量大，比较次数会大大增加
 	 * 
