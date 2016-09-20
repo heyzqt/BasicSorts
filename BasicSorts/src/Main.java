@@ -12,7 +12,7 @@ public class Main {
 		// TODO Auto-generated method stub
 		// int[] a = new int[] { 5, 3, 1, 2, 7, 6, 7, 9 };
 		// int[] b = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
-		int[] a = new int[] { 5, 3, 1, 2, 4 };
+		int[] a = new int[] { 45, 78, 57, 25, 41, 89 };
 		// insertionSort(a);
 		// bubbleSort(a);
 		// quickSork(a, 0, a.length - 1);
@@ -59,17 +59,19 @@ public class Main {
 	 */
 	private static void sift(int[] a, int k, int m) {
 		int i = k;
-		int j = i * 2 + 1; // 要筛选结点的左孩子
+		int j = 2 * i + 1; // 要筛选结点的左孩子
 		int t;
 		while (j <= m) {
 			if (j < m && a[j] < a[j + 1])
-				j++; // 选左右孩子中的较大者
-			if (a[i] > a[j]) { // 如果根节点大于较大者
+				j++;// 选左右孩子中的较大者
+			if (a[i] > a[j]) { // 被筛选结点更大
 				break;
 			} else {
 				t = a[i];
 				a[i] = a[j];
 				a[j] = t;
+				i = j; // 对交换后的结点i继续进行筛选
+				j = 2 * i + 1;
 			}
 		}
 	}
